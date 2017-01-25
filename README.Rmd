@@ -1,0 +1,10 @@
+---
+title: "Test"
+author: "Ella Vainio"
+date: "25 tammikuuta 2017"
+output: html_document
+---
+This course has been a challenge trying to make everything work like it is supposed to.
+Hopefully I got everything right!
+
+https://ellavain.github.io/IODS-project/
