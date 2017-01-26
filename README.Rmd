@@ -1,12 +1,7 @@
----
-title: "About the project"
-author: "Ella"
-date: "25 tammikuuta 2017"
-output:
-  html_document: index.html
- 
----
-This course has been a challenge trying to make everything work like it is supposed to.
-Hopefully I got everything right!
+
+
+
+Hello this is task number 4, hopefully this will appear in my repository!
+https://ellavain.github.io/IODS-project/
 
 
