@@ -3,7 +3,7 @@ output:
   html_document: default
   pdf_document: default
 ---
-# Insert chapter 2 title here
+# 2. Regression and model validation
 
 *Describe the work you have done this week and summarize your learning.*
 
@@ -15,10 +15,10 @@ data1 <- read.table("data/learning2014.txt" , sep = ",",
 header = TRUE)
 ```
 
+This weeks tasks is to present the material we are going to be working with and run a multiple regression model. While presenting the material, we will also need to provide visuals of the multiple regression models and the distribution of each variable. We have to explain the outputs of visuals and summaries. 
 
 
-
-I will begin to summaries the content of data1 and show its different dimensions:
+To visualize the content of the material, I will begin with the summary of data1 and show its different dimensions:
 ```{r}
 summary(data1)
 
@@ -26,62 +26,187 @@ summary(data1)
 ```{r}
 dim(data1)
 ```
+
 As we can se, the data consists of 7 different variables gender, age, attitude, deep, stra, surf and points, and it has a total of 166 observations. The summary function gives 6 different basic key figures; minimum, 1st quartile, median, mean, 3rd quartile and maximum values.
 
-Just to clarify how the data is structured:
+The minimum and maximum values gives the variables smallest and largest values.
+
+The 1st and the 3rd quartile explain how many people are in the first 25% of the content (1st), and how many are included in the first 75%. These functions are usefull, because you will know where the middle 50% of the content has placed themselves. 
+
+Median is the value that is in the middle, if you gather the data in the order that the smallest values comes first, and the highest values comes last.
+
+The mean value is the all the values of a variable divided in the numbers of observatios there is int the variable. 
+
+
+Now I want to present the structure of the data, which includes what type of variables (numerical, logical, character). 
+
 
 ```{r}
 str(data1)
 ```
 
-Just to visualize, I will have a picture of each variable, 
 
-**-gender distribution**
+
+##Visualizing variable distributions
+
+**-gender variable**
 
 ```{r}
 plot(data1$gender)
 ```
+
 As we can se, a majority of the respondents are women, and from the summary we can find that there are 110 women and 56 men.
 
 
-**-age distribution**
+**-age variable**
 
 ```{r}
 plot(data1$age)
 ```
-Here we can see that most of the respondents are in their 20s and the mean age is arounf 25.5 years. 
+
+Here we can see that most of the respondents are in their 20s (between 21 and 27) and the mean age is arounf 25.5 years. 75% av the respodents are 27 or below, so we have quite young respondents. 
 
 
-**-Attitude distribution**
+**-Attitude variable**
 
 ```{r}
 plot(data1$attitude)
 ```
-Here we can se how the the attitude variable is very scattered, and has a median and mean around 3. This could indicate that people have very different attitudes regarding this surtain topic.
+
+Here we can se how the the attitude variable is very scattered, and has a median and mean around 3. The variable ranges from 1 to 5. This could indicate that people have very different attitudes regarding this surtain topic.
 
 **-Deep variable**
 
 ```{r}
 plot(data1$deep)
 ```
-Here we can se that most of the respondents has a value between 3 and 4 (1st and 3d quartile) on the deep variable
+
+Here we can se that most of the respondents has a value between 3 and 4 (1st and 3d quartile) on the deep variable. 
 
 **- Stra variable**
 
 ```{r}
 plot(data1$stra)
 ```
-The distribution in variable stra is also quite scattered, but the middle 50% is between 2,625 and 3,625 (1st and 3rd quartile)
+
+The distribution in variable stra is also quite scattered, but the middle 50% is between 2,625 and 3,625 (1st and 3rd quartile).
 
 **- Surf variable**
 
 ```{r}
 plot(data1$surf)
 ```
-In the surf variable we can see that the distribution is gathered between 2,4 and 3,4. 
+
+In the surf variable we can see that the distribution is gathered between 2,4 and 3,4. But over all this variable is also quite scattered.
+
 **-points variable**
 
 ```{r}
 plot(data1$points)
 ```
+
 Here we can se that the points range between 7 and 33 points, and most of the respondents has over 20 points. 
+
+Now when I have all the summaries of the variables, I want to present a table where all the variables are compared with each other. The color distribution separates between women and men.
+
+```{r}
+pairs(data1, col = data1$gender)
+```
+
+From this table you can see if any of the different variabes correlate with each other to some extent. This is a good table to visualize the whole materials distribution in one picture. 
+
+
+
+**-Task 3, multiple regression**
+
+I created a function consisting of a multiple regression. The target variable is points, and the 3 explanatory variables are attitude, stra and deep. 
+
+```{r}
+
+model1 <- lm(data1$points ~ data1$attitude + data1$stra + data1$deep, data = data1)
+```
+
+And now a summary of the multiple regression model:
+
+```{r}
+summary(model1)
+```
+
+Here we can see the 3 different explanatory variables, and also the target variable under the title 'Coefficients'. The Intercept, is the value in the multiple regression where it crosses the y-axis, so it means that when all the explanatory variables (x) are 0, the regression line starts at 11.3915 on the y-axis. 
+
+  The first explanatory variable attitude's estimate is 3,5254, which means that every one point higher on the explanatory variable attitude, the target variable points will increase on average by 3,5254 points, if the other explanatory variables are constant. 
+  The second explanatory variable stra's estimate is 0,9621, which means that every point higher on this explanatory variable, the target variable will increase on average by 0,9621 if the other explanatory variables are constant. 
+  The third explanatory variable deep's estimate is -0,7493, which means that every one point higher on the explanatory variable deep, the target variable will on average decrease by 0,7492 points, if the other explanatory variables are constant. 
+  
+But before we can accept this multiple regression model, we have to look at the Pr(>|t|). The Pr(>|t|) explain if the specific explanatory variable is statistically significant or not. Usually the boarder for being statistically significant is either 0,05 or 0,01 depending on what has been chosen. We don't need to look at the intercepts Pr(>|t|), but we need to look at the explanatory variables Pr(>|t|).
+  The explanatory variable attitude has a Pr(>|t|) that is smaller than 0,000, which concludes that it is statistically significant.
+  The next explanatory variable stra has a Pr(>|t|) of 0,074, which means it is statistically insignificant, that means this variable isn't for surtain a good model for this multiple regression.
+  The last explanatory variable deep has aPr(>|t|)  of 0,319, which means it is statistically very insignificant. 
+  Having 2 insignificant values, I will skip the value that was less significant (deep) and run the multiple regression again, but now with only 2 explanatory variables. 
+  
+
+**-Multiple regression vol 2**
+
+```{r}
+model2 <-(lm(data1$points ~ data1$attitude + data1$stra))
+```
+
+  summary of the new model
+  
+```{r}
+summary(model2)
+```
+
+Here we now only have 2 explanatory variables (attitude and stra) and our target variable (points). Now we want to explore if it has happened anything after we removed the 3rd explanatory variable. 
+  The estimate of intercept has changed from 11,3915 to 8,9729. 
+  The explanatory variable attitude has an estimate of 3,4658, and a Pr(>|t|) of less than 0,000, which means it is statistically significant.
+  On the other hand the secound explanatory variable stra has an estimate of 0,9137, but is still statistically insignificant with the Pr(>|t|) of 0,08927.
+  This means that this multiple regression is still insignificant. 
+
+
+
+
+**-Multiple R Squared**
+
+The multiple R squared is how much the explanatory variables explain about the variation in the target variable.
+
+In my secound multiple regression model the multiple R squared value is 0,2048. This value explains that 20,48% of the variation in the target value points, is explained by the variation in the explanatory variables attitude and stra. 
+
+If the explanatory variable can explain over 20% of the variation in the target variable, it is quite a good regression model.
+
+But in my case, the secound explanatory variable was insignificant, so I am not surtain if this model is so good after all. 
+
+
+**-Task 5**
+
+I will produce diagnstic plots: Residuals vs Fitted values, Normal QQ-plot and Residuals vs Leverage. I will produce these plots with the multiple regression model with only 2 explanatory variables (attitude and stra). 
+
+**First one; Residuals vs Fitted**
+
+```{r}
+plot(model2, which = c(1))
+```
+
+This table has the residual on the y-axis, and all the fitted values on the x-axis. The red stripe defines the fitted values residual and how well the multiple regressions fits this residual.
+
+**Normal QQ-plot**
+
+```{r}
+plot(model2, which = c(2))
+```
+Here is the same thing, the better the theoretical quantiles fit on the line, the better the multiple regression is. Because the closer you are to the regression line, the better is your regression, because the closer to the residuals you are, the less error there is in you model. 
+
+
+**Residuals vs Leverage**
+
+```{r}
+plot(model2, which = c(5))
+```
+
+
+###Summary of my learning
+I have understood a little bit more on how to use RStudio and to syncronize with Github and so forth.
+
+I have learned through the Datacamp excersizes new codes, that has been very usefull in this task. I have also learned to add pictures to a rmd file. 
+
+
