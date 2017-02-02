@@ -21,8 +21,67 @@ header = TRUE)
 I will begin to summaries the content of data1 and show its different dimensions:
 ```{r}
 summary(data1)
+
 ```
 ```{r}
 dim(data1)
 ```
 As we can se, the data consists of 7 different variables gender, age, attitude, deep, stra, surf and points, and it has a total of 166 observations. The summary function gives 6 different basic key figures; minimum, 1st quartile, median, mean, 3rd quartile and maximum values.
+
+Just to clarify how the data is structured:
+
+```{r}
+str(data1)
+```
+
+Just to visualize, I will have a picture of each variable, 
+
+**-gender distribution**
+
+```{r}
+plot(data1$gender)
+```
+As we can se, a majority of the respondents are women, and from the summary we can find that there are 110 women and 56 men.
+
+
+**-age distribution**
+
+```{r}
+plot(data1$age)
+```
+Here we can see that most of the respondents are in their 20s and the mean age is arounf 25.5 years. 
+
+
+**-Attitude distribution**
+
+```{r}
+plot(data1$attitude)
+```
+Here we can se how the the attitude variable is very scattered, and has a median and mean around 3. This could indicate that people have very different attitudes regarding this surtain topic.
+
+**-Deep variable**
+
+```{r}
+plot(data1$deep)
+```
+Here we can se that most of the respondents has a value between 3 and 4 (1st and 3d quartile) on the deep variable
+
+**- Stra variable**
+
+```{r}
+plot(data1$stra)
+```
+The distribution in variable stra is also quite scattered, but the middle 50% is between 2,625 and 3,625 (1st and 3rd quartile)
+
+**- Surf variable**
+
+```{r}
+plot(data1$surf)
+```
+In the surf variable we can see that the distribution is gathered between 2,4 and 3,4. 
+**-points variable**
+
+```{r}
+plot(data1$points)
+```
+Here we can se that the points range between 7 and 33 points, and most of the respondents has over 20 points. 
