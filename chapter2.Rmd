@@ -3,13 +3,16 @@ output:
   html_document: default
   pdf_document: default
 ---
-# 2. Regression and model validation
+# 2. Regression and model validation, analysis
 
 *Describe the work you have done this week and summarize your learning.*
 
-- Describe your work and results clearly. 
-- Assume the reader has an introductory course level understanding of writing and reading R code as well as statistical methods
-- Assume the reader has no previous knowledge of your data or the more advanced methods you are using  
+*- Describe your work and results clearly.* 
+*- Assume the reader has an introductory course level understanding of writing and reading R code as well as statistical methods*
+*- Assume the reader has no previous knowledge of your data or the more advanced methods you are using*
+
+##Summary of the data
+
 ```{r}
 data1 <- read.table("data/learning2014.txt" , sep = ",", 
 header = TRUE)
@@ -18,7 +21,7 @@ header = TRUE)
 This weeks tasks is to present the material we are going to be working with and run a multiple regression model. While presenting the material, we will also need to provide visuals of the multiple regression models and the distribution of each variable. We have to explain the outputs of visuals and summaries. 
 
 
-To visualize the content of the material, I will begin with the summary of data1 and show its different dimensions:
+I begin to visualize the content of the whole material, so I summarise the content of the variable data1, and then I will proceed to visualize data1's different dimensions:
 ```{r}
 summary(data1)
 
@@ -45,11 +48,14 @@ Now I want to present the structure of the data, which includes what type of var
 str(data1)
 ```
 
+We can see how the different variables are coded either with 'num','int' or 'Factor'.
+This provides information on how the variables has been measured.
 
+The code 'int' means intervall, and these variables can range between a surtain amount of i.e. points. Intervall data has the same range between every outcome, i.e. the variable age is easy to measure and compare, because for every year, there is the same distance. 
 
 ##Visualizing variable distributions
 
-**-gender variable**
+###-gender variable
 
 ```{r}
 plot(data1$gender)
@@ -58,7 +64,7 @@ plot(data1$gender)
 As we can se, a majority of the respondents are women, and from the summary we can find that there are 110 women and 56 men.
 
 
-**-age variable**
+###-age variable
 
 ```{r}
 plot(data1$age)
@@ -67,7 +73,7 @@ plot(data1$age)
 Here we can see that most of the respondents are in their 20s (between 21 and 27) and the mean age is arounf 25.5 years. 75% av the respodents are 27 or below, so we have quite young respondents. 
 
 
-**-Attitude variable**
+###-Attitude variable
 
 ```{r}
 plot(data1$attitude)
@@ -75,7 +81,7 @@ plot(data1$attitude)
 
 Here we can se how the the attitude variable is very scattered, and has a median and mean around 3. The variable ranges from 1 to 5. This could indicate that people have very different attitudes regarding this surtain topic.
 
-**-Deep variable**
+###-Deep variable
 
 ```{r}
 plot(data1$deep)
@@ -83,7 +89,7 @@ plot(data1$deep)
 
 Here we can se that most of the respondents has a value between 3 and 4 (1st and 3d quartile) on the deep variable. 
 
-**- Stra variable**
+###- Stra variable
 
 ```{r}
 plot(data1$stra)
@@ -91,7 +97,7 @@ plot(data1$stra)
 
 The distribution in variable stra is also quite scattered, but the middle 50% is between 2,625 and 3,625 (1st and 3rd quartile).
 
-**- Surf variable**
+###- Surf variable
 
 ```{r}
 plot(data1$surf)
@@ -99,13 +105,15 @@ plot(data1$surf)
 
 In the surf variable we can see that the distribution is gathered between 2,4 and 3,4. But over all this variable is also quite scattered.
 
-**-points variable**
+###-points variable
 
 ```{r}
 plot(data1$points)
 ```
 
 Here we can se that the points range between 7 and 33 points, and most of the respondents has over 20 points. 
+
+###All variables compared with each other
 
 Now when I have all the summaries of the variables, I want to present a table where all the variables are compared with each other. The color distribution separates between women and men.
 
@@ -117,7 +125,7 @@ From this table you can see if any of the different variabes correlate with each
 
 
 
-**-Task 3, multiple regression**
+###-Task 3, multiple regression
 
 I created a function consisting of a multiple regression. The target variable is points, and the 3 explanatory variables are attitude, stra and deep. 
 
@@ -145,7 +153,7 @@ But before we can accept this multiple regression model, we have to look at the 
   Having 2 insignificant values, I will skip the value that was less significant (deep) and run the multiple regression again, but now with only 2 explanatory variables. 
   
 
-**-Multiple regression vol 2**
+###-Multiple regression vol 2
 
 ```{r}
 model2 <-(lm(data1$points ~ data1$attitude + data1$stra))
@@ -166,7 +174,7 @@ Here we now only have 2 explanatory variables (attitude and stra) and our target
 
 
 
-**-Multiple R Squared**
+###-Multiple R Squared
 
 The multiple R squared is how much the explanatory variables explain about the variation in the target variable.
 
@@ -177,36 +185,41 @@ If the explanatory variable can explain over 20% of the variation in the target 
 But in my case, the secound explanatory variable was insignificant, so I am not surtain if this model is so good after all. 
 
 
-**-Task 5**
+###-Task 5
 
 I will produce diagnstic plots: Residuals vs Fitted values, Normal QQ-plot and Residuals vs Leverage. I will produce these plots with the multiple regression model with only 2 explanatory variables (attitude and stra). 
 
-**First one; Residuals vs Fitted**
+###Residuals vs Fitted
 
 ```{r}
 plot(model2, which = c(1))
 ```
 
-This table has the residual on the y-axis, and all the fitted values on the x-axis. The red stripe defines the fitted values residual and how well the multiple regressions fits this residual.
+This table has the residual on the y-axis, and all the fitted values on the x-axis. The red stripe defines the fitted values residual and how well the multiple regressions fits this residual. We can se how most of the values are gathered between 18 to 27, and that they differ from the residuals between -10 to 10. 
 
-**Normal QQ-plot**
+###Normal QQ-plot
 
 ```{r}
 plot(model2, which = c(2))
 ```
+
 Here is the same thing, the better the theoretical quantiles fit on the line, the better the multiple regression is. Because the closer you are to the regression line, the better is your regression, because the closer to the residuals you are, the less error there is in you model. 
 
 
-**Residuals vs Leverage**
+###Residuals vs Leverage
 
 ```{r}
 plot(model2, which = c(5))
 ```
 
+Here we can see how the standardized residuals are on the y-axis, and the leverage is on the x-axis. The residual axis shows how much the observations differs from the multiple regression line. The leverage on the x-axis explains how far the explanatory variables are from other observations. 
+
 
 ###Summary of my learning
 I have understood a little bit more on how to use RStudio and to syncronize with Github and so forth.
 
-I have learned through the Datacamp excersizes new codes, that has been very usefull in this task. I have also learned to add pictures to a rmd file. 
+I have learned through the Datacamp excersizes new codes, that has been very usefull in this task. I have also learned to add pictures to a rmd file. I have also learned how to combine questions into new variables. But I was unable to exclude the variables that where 0 in the data wrangling excersize, so I had to use the ready made data. 
+
+I also have a slightly better understanding of the model where every variable is compared with each other. But I am quite familiar with the summary of the multiple regression model, so there was nothing very new. 
 
 
