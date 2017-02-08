@@ -5,91 +5,13 @@ date: "7 helmikuuta 2017"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+
+
 #3. Logistic Regression
 
-##Task 3. 
-
-I shall begin with exploring the two data frames (student_mat and student_por) individually. So I will present the structure and dimensions of the two data frames.
-
-### Student_mat structure and dimensions
-
-####Structure
-```{r}
-str(student_mat)
-```
-
-####Dimensions
-```{r}
-dim(student_mat)
-```
-###Student_por structure and dimension
-
-####Structure
-
-```{r}
-str(student_por)
-```
-
-####Dimensions 
-
-```{r}
-dim(student_por)
-```
-
-
-##Task 4. Brief description of the new joined data
-
-
-Here I will present the new data, that consists of background information and so forth, but the variables I will be focusing on mostly in this task is 'alc_use' and 'high_use'. But firstly I shall present all the variables:
 ```{r}
 str(url)
 ```
-
-
-
-
-The data consists of variables as adress, that is defined as either urban (U) or rural (R), famsize measures how big the family is in 2 different groups (GT3, LT3), greater than 3 and less than 3. Medu and Fedu measures the mothers and fathers education, and Mjob and Fjob describes what kind of work the mother and father does. The codes G1, G2 and G3 describes the different grades in two school subjects (portugal and maths), in the different periods. 
-
-Here I also want to present the dimensions of the data:
-
-```{r}
-dim(url)
-```
-As we can see, there are 35 different variables and 382 observations. 
-
-
-
-
-###Task 3. Alcohol consumption and 4 different variables
-
-I would like to explore 4 different variables and what kind of relationship they have with alcohol consumption.
-
-
-The first variable is 'failures', this variable measures how many times the individual has failed from a scale from 0-3 and more than 4. I think high use of alcohol could lead to a higher rate of failure in school. This bases on the hypothesis that alcohol consumption could lead to less success in school. 
-
-
-
-```{r}
-table(url$failure)
-```
-Here we can se the distribution of how many has failed their courses. A vast majority has not failed a course, and only 66 people has failed once or more. 
-
-
-The next variable that I shall present is the high_use of alcohol variable. 
-
-```{r}
-table(url$high_use)
-```
-Here we have distributed 270 on FALSE and 112 TRUE. In this data high_use is considered TRUE if the alc_use is more than 2. And the alc_use variable consists of the average of two variables 'Walc' and 'Dalc'. Walc measures how often alcohol is consumed in the weekends from a scale from 1-5, and Dalc measures how often alcohol is consumed during the workdays(scale 1-5). So the 270 FALSE is people that on average consume less than 2, and TRUE means that the respondent consumes more than 2. 
-
-
-head(url$failure)
-g1 <- ggplot(url, aes(x = high_use, y = failures, col = sex))
-
-
 
 
 ## R Markdown
