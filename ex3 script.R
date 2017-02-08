@@ -28,6 +28,8 @@ plot(data1$stra)
 plot(data1$surf)
 plot(data1$points)
 
+table(data1)
+table(data1$gender, data1$age, data1$attitude, data1$deep, data1$stra, data1$surf, data1$points)
 table(data1$gender)
 table(data1$age)
 table(data1$points)
@@ -78,3 +80,20 @@ summary(model2)
 'data1$stra is significant if we define 0,1 as our minimum amount of significance'
 
 'this explanatory variables explains 0,2048 of the variation in the target variable data1$points'
+
+model2 <- lm(points ~ attitude + stra, data = data1)
+par(mfrow = c(2,2))
+plot(model2, which = c(1,2,5))
+
+plot(model2, which = c(1))
+
+
+pairs(data1, col = data1$gender)
+
+
+
+
+
+
+
+
