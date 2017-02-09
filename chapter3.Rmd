@@ -33,41 +33,102 @@ dim(url)
 
 As we can see, there are 35 different variables and 382 observations.
 
-###Task 3. Alcohol consumption and 4 different variables
 
-The two new variables I will be studying the relationship is the variables alc_use and high_use. These variables consists of other variables combined. Alc_use consists of the avergage of the variables Dalc and Walc, that are the variables that measure how much alcohol is consumed during the workweek and the weekends. The high_use is when the alc_use on avreage is over 2. 
+```{r}
+library(tidyr); library(dplyr); library(ggplot2)
+```
+
+##Task 3. Numerical and graphical exploring 
+
+
+###Alcohol consumption variables
+The two new variables I will be studying the relationship with other variables are alc_use and high_use. These variables consists of other variables combined. Alc_use consists of the avergage of the variables Dalc and Walc, that are the variables that measure how much alcohol is consumed during the workweek and the weekends. The high_use is when the alc_use on avreage is over 2. 
+
+####Tables and visuals of the variable alc_use
+
+```{r}
+table(url$alc_use)
+```
+
+```{r}
+g7 <- ggplot(data = url, aes(x = alc_use, fill = sex))
+g7 + geom_bar()
+```
+
+####Tables and visuals of the variable high_use
+
+```{r}
+table(url$high_use)
+```
+
+```{r}
+g8 <- ggplot(data = url, aes(x = high_use, fill = sex))
+g8 + geom_bar()
+```
+
+
+###4 interesting variables
+The first variable is 'failures', this variable measures how many times the individual has failed from a scale from 0-3 and more than 4. I think high use of alcohol could lead to a higher rate of failure in school. This bases on the hypothesis that alcohol consumption could lead to less success in school. 
+
+  The second variable is 'absences' that measures how many times the person has been abscent from school. The variable ranges from 0-93.
+  
+  The third variable is 'famrel' that measures the quality of the relationship with the family. This variable ranges from 1-5, where 1 is very bad, and 5 is excellent.
+  
+  The forth variable 'goout' that measures on a scale from 1-5, very low(1) to very high (5). 
+
+
+
+###Tables and visuals of the variable failures
 
 
 ```{r}
 table(url$failures)
 ```
+Just to visualize the failures variable, I will 
+```{r}
+g3 <- ggplot(data = url, aes(x = failures, fill = sex))
+g3 + geom_bar()
+```
+
+
+###Tables and visuals of the variable absences
+
 
 ```{r}
 table(url$absences)
 ```
 
+```{r}
+g4 <- ggplot(data = url, aes(x = absences, fill = sex))
+g4 + geom_bar()
+```
+
+
+###Tables and visuals of the variable famrel
+
+```{r}
+table(url$famrel)
+```
+
+```{r}
+g5 <- ggplot(data = url, aes(x = famrel, fill = sex))
+g5 + geom_bar()
+```
+
+###Tables and visuals of the variable goout
+
+```{r}
+table(url$goout)
+```
+
+```{r}
+g6 <- ggplot(data = url, aes(x = goout, fill = sex))
+g6 + geom_bar()
+```
+
+
+
 
 ####Summary of alc_use
 
 
-
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
