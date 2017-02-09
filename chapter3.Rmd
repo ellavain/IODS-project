@@ -38,7 +38,7 @@ As we can see, there are 35 different variables and 382 observations.
 library(tidyr); library(dplyr); library(ggplot2)
 ```
 
-##Task 3. Numerical and graphical exploring 
+##Task 3. Numerical and graphical exploring variables
 
 
 ###Alcohol consumption variables
@@ -129,6 +129,18 @@ g6 + geom_bar()
 
 
 
-####Summary of alc_use
+###Exploring the relationships between the variables
 
+####High_use vs absences
+
+```{r}
+
+g41 <- ggplot(url, aes(x = high_use, y = absences, col = sex))
+g41 + geom_boxplot() + ylab("absences")
+
+```
+
+Here we can explore the individuals that has a high use of alcohol and the once whom not have a high use of alcohol.
+
+We can see a slight difference between the women with high and low alcohol consumption in the difference in absences. But the biggest difference lies in the diffrence between absence with high and low use of alcohol between men. In the low use (FALSE) half of the men are distributed between 0 and less than 5 absences on average. On the other hand, in the high use(TRUE) we can see that half of this group has half of their distributions between 3 and 13 absences on average.  
 
