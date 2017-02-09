@@ -4,7 +4,7 @@ date: "7 helmikuuta 2017"
 output: html_document
 
 "student_mat and student_por joining"
-?library(dplyr)
+library(dplyr)
 
 student_mat <-read.table("student-mat.csv", sep = ";", header = TRUE)
 student_por <-read.table("student-por.csv", sep = ";", header = TRUE)

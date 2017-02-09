@@ -9,9 +9,47 @@ output: html_document
 
 #3. Logistic Regression
 
+###Task 2. Brief summary of the data
+
+Here I will present the new data, that consists of background information and so forth, but the variables I will be focusing on mostly in this task is 'alc_use' and 'high_use'. But firstly I shall present all the variables:
+```{r}
+url <- read.table("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/alc.txt", sep=",", header=TRUE)
+```
+
+
+
 ```{r}
 str(url)
 ```
+
+The data consists of variables as adress, that is defined as either urban (U) or rural (R), famsize measures how big the family is in 2 different groups (GT3, LT3), greater than 3 and less than 3. Medu and Fedu measures the mothers and fathers education, and Mjob and Fjob describes what kind of work the mother and father does. The codes G1, G2 and G3 describes the different grades in two school subjects (portugal and maths), in the different periods. 
+
+
+Here I also want to present the dimensions of the data:
+
+```{r}
+dim(url)
+```
+
+As we can see, there are 35 different variables and 382 observations.
+
+###Task 3. Alcohol consumption and 4 different variables
+
+The two new variables I will be studying the relationship is the variables alc_use and high_use. These variables consists of other variables combined. Alc_use consists of the avergage of the variables Dalc and Walc, that are the variables that measure how much alcohol is consumed during the workweek and the weekends. The high_use is when the alc_use on avreage is over 2. 
+
+
+```{r}
+table(url$failures)
+```
+
+```{r}
+table(url$absences)
+```
+
+
+####Summary of alc_use
+
+
 
 
 ## R Markdown
