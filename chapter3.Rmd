@@ -193,7 +193,7 @@ alc_use <-url$alc_use
 
 
 ```{r}
-g31 <- ggplot(data = url, aes(x = failures, y = alc_use, fill = sex))
+g31 <- ggplot(data = url, aes(x = failures, y = alc_use, col = sex))
 g31 + geom_jitter()
 ```
 
@@ -213,7 +213,32 @@ coef(m)
 
 
 
+####Alc_use vs. famrel
 
+```{r}
+g51 <- ggplot(data = url, aes(x = famrel, y = alc_use, col = sex))
+g51 + geom_jitter() + ylab(alc_use)
+```
+
+
+```{r}
+n <- glm(alc_use ~ famrel, data = url)
+summary(n)
+```
+
+
+
+```{r}
+coef(n)
+```
+
+
+####Alc_use vs goout
+
+```{r}
+g61 <- ggplot(data = url, aes(x = goout, y = alc_use, col = sex))
+g61 + geom_jitter() + ylab(alc_use)
+```
 
 
 
