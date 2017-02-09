@@ -55,6 +55,9 @@ g7 <- ggplot(data = url, aes(x = alc_use, fill = sex))
 g7 + geom_bar()
 ```
 
+The alc use variable is clearly distributed mostly on the left side, which means that the alcohol consumption is smaller. The most common value in this variable is 1. It is very interesting that the proportion of women are larger in the values 1 and 1.5, and when the value is 3 or larger, men has the higher proportion. In other words I conclude that men consume more alcohol than women.  
+
+
 ####Tables and visuals of the variable high_use
 
 ```{r}
@@ -65,6 +68,9 @@ table(url$high_use)
 g8 <- ggplot(data = url, aes(x = high_use, fill = sex))
 g8 + geom_bar()
 ```
+
+The distribution supports my previous assumptions regarding the gender difference in alcohol consumption. Here we can see that in the FALSE group (=<2), has a majority of women. On the other hand, the TRUE group has a majority of men. 
+This was not an unexpeced result, because alc_use and high_use use the same variables and data.
 
 
 ###4 interesting variables
@@ -90,6 +96,9 @@ g3 <- ggplot(data = url, aes(x = failures, fill = sex))
 g3 + geom_bar()
 ```
 
+From this table we can see how many failures in tests individuals has made, and also explore the difference between the genders. 
+
+In the first value 0, there is no significant difference between the genders, and we can also conclude that this is the most common value in this variable (316). But there are slight differences between the values 1,2 and 3, but I am unsurtain if they are significant or not. 
 
 ###Tables and visuals of the variable absences
 
@@ -103,6 +112,8 @@ g4 <- ggplot(data = url, aes(x = absences, fill = sex))
 g4 + geom_bar()
 ```
 
+The distribution of absences are slightly odd, but I assume that this depends on 2h lectures. The distribution (beginning from the left) every other value is high and low. If we look at the table frame from this variable, we can conclude the same thing. 
+From this distribution it seems that women tend to be more absent from school in comparison to men. The extreme values 54, 56 and 75 are also absences of women. 
 
 ###Tables and visuals of the variable famrel
 
@@ -115,6 +126,9 @@ g5 <- ggplot(data = url, aes(x = famrel, fill = sex))
 g5 + geom_bar()
 ```
 
+The variable that measure the family relationship from a scale from 1-5(very bad - excellent), we can see that the distribution is on the most part between 3 and 5. We can conclude that most of the respondents have between a neutral and an excellent relationship with their families.  
+
+
 ###Tables and visuals of the variable goout
 
 ```{r}
@@ -126,7 +140,7 @@ g6 <- ggplot(data = url, aes(x = goout, fill = sex))
 g6 + geom_bar()
 ```
 
-
+The variable goout measures going out with friends, on a scale from very low(1) to very high(5). Most of the distribution is between the values 2-4, and only a few find themselves spenfinf very low amount of time going out with friends. There is neither a very big difference between the genders. 
 
 
 ###Exploring the relationships between the variables
