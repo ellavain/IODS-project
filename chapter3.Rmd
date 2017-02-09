@@ -194,12 +194,11 @@ alc_use <-url$alc_use
 
 ```{r}
 g31 <- ggplot(data = url, aes(x = failures, y = alc_use, col = sex))
-g31 + geom_jitter()
+g31 + geom_jitter() + ylab(alc_use)
 ```
 
-```{r}
-cor(alc_use, url$failures)
-```
+
+
 
 ```{r}
 m <- glm(alc_use ~ failures, data = url)
@@ -210,6 +209,11 @@ summary(m)
 ```{r}
 coef(m)
 ```
+
+The relationship between failure and alc_use, we can find that alc_use statictically significant with the variable failures (0,003). This means that alc_use is explained to some extent by how much the individual fails in school. 
+
+From this output, we can find that for every more failure, the alcohol consumption will increace by 0,2. 
+
 
 
 
@@ -232,6 +236,9 @@ summary(n)
 coef(n)
 ```
 
+From this image and output, we can conclude that there is a statistically significant relationship between the variable alc_use and famrel (0,018). This means that the difference in alc_use can to some extent be explained by the variable famrel. 
+
+From the output we can find that for every one step on the famrel scale, the alcohol use reduces by 0,13. This is also what my hypothesis claimed. 
 
 ####Alc_use vs goout
 
@@ -240,5 +247,100 @@ g61 <- ggplot(data = url, aes(x = goout, y = alc_use, col = sex))
 g61 + geom_jitter() + ylab(alc_use)
 ```
 
+```{r}
+e <- glm(alc_use ~ goout, data = url)
+summary(e)
+```
 
+The relationship between the alc_use and goout variable is statistically significant (0.000). This means that the goout variable can to some extent explain the variation in the alc_use variable. This translates to an increase of 0,34 to alc_use when the goout variable increaces by one. 
+
+This confirms my hypothesis regarding going out more with consuming more alcohol.
+
+##Multiple logistic regression
+
+But, just because every variable is individually significant with the alcohol use variable, doens't mean it is statistically significant if we test them all together at once. 
+
+
+```{r}
+f <- glm(high_use ~ failures + absences + goout + famrel, data = url, family = "binomial")
+
+```
+```{r}
+summary(f)
+```
+Failures is not any longer statistically significant, so I shall remove the failure variable from the logistic regression. 
+
+```{r}
+f2 <- glm(high_use ~ + absences + goout + famrel, data = url, family = "binomial")
+```
+
+
+```{r}
+summary(f2)
+```
+
+Now all the explanatory variables are statistically significant, so we can start to explore the odds ratios and the confidence intervalls for this model. 
+
+####Odds ratios
+
+```{r}
+OR <- coef(f2) %>% exp()
+```
+
+
+####Confidence intervalls
+```{r}
+CI <- confint(f2) %>% exp()
+```
+
+####The odds ratios with their confidence intervalls 
+```{r}
+cbind(OR, CI)
+```
+
+To interpet these confidence intervalls and odds ratios:
+
+The CI deifnes the upper- and lower confidence intrervalls. This means that between which values are 95% of the variable values. For example the variable goout is 95% distributed between the values 1.76 and 2.84. In this case the alpha value is 0,05, which leads to why we begin to look at the values from 2,5% and end at 97,5%. 
+
+The OR (odds ratio) explains how likley it is for a specific variable to appear. The odds ratio ranges from >0 to infinity. To exemplify this statement, we can look at the goout variable. The goout variables odds ratio is 2,22, which means, that it is a little over 2 times more likley to happened. 
+
+
+##Tabulation, binary prediction
+
+```{r}
+f2 <- glm(high_use ~ absences + goout + famrel, data = url, family = "binomial")
+```
+
+#####predicting
+
+```{r}
+probabilities <- predict(f2)
+```
+
+
+```{r}
+url <- mutate(url, probability = probabilities)
+```
+
+```{r}
+url <- mutate(url, prediction = probability > 0.5)
+```
+
+```{r}
+table(high_use = url$high_use, prediction = url$prediction)
+```
+
+```{r}
+t <- ggplot(url, aes(x = probability, y = high_use, col = prediction))
+```
+
+```{r}
+t + geom_point()
+```
+
+
+
+```{r}
+table(high_use = url$high_use, prediction = url$prediction) %>% prop.table %>% addmargins
+```
 
