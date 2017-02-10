@@ -14,7 +14,7 @@ library(tidyr); library(dplyr); library(ggplot2); library(boot)
 
 ###Task 2. Brief summary of the data
 
-Here I will present the new data, that consists of background information and so forth, but the variables I will be focusing on mostly in this task is 'alc_use' and 'high_use'. But firstly I shall present all the variables:
+Here I will present the new data, that consists of background information about the student and some personal questions regarding their life as a whole. But the variables I will be focusing on mostly in this task is 'alc_use' and 'high_use'. But firstly I shall present all the variables:
 ```{r}
 url <- read.table("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/alc.txt", sep=",", header=TRUE)
 ```
@@ -79,11 +79,11 @@ This was not an unexpeced result, because alc_use and high_use use the same vari
 ##4 interesting variables
 The first variable is 'failures', this variable measures how many times the individual has failed from a scale from 0-3 and more than 4. I think high use of alcohol could lead to a higher rate of failure in school. This bases on the hypothesis that alcohol consumption could lead to less success in school. 
 
-  The second variable is 'absences' that measures how many times the person has been abscent from school. The variable ranges from 0-93.
+The second variable is 'absences' that measures how many times the person has been abscent from school. The variable ranges from 0-93.
   
-  The third variable is 'famrel' that measures the quality of the relationship with the family. This variable ranges from 1-5, where 1 is very bad, and 5 is excellent.
+The third variable is 'famrel' that measures the quality of the relationship with the family. This variable ranges from 1-5, where 1 is very bad, and 5 is excellent.
   
-  The forth variable 'goout' that measures on a scale from 1-5, very low(1) to very high (5). 
+The forth variable 'goout' that measures the respondents opinion on how often he/she goes out with friends on a scale from 1-5, where 1 equals very low, 5 equals very high. 
 
 
 
@@ -174,15 +174,19 @@ g41 <- ggplot(url, aes(x = high_use, y = absences, col = sex))
 g41 + geom_boxplot() + ylab("absences")
 
 ```
+```{r}
+b <- glm(high_use ~ absences, data = url)
+summary(b)
 
-Here we can explore the individuals that has a high use of alcohol and the once whom not have a high use of alcohol.
+```
+
+
+Here we can explore the individuals that has a high use of alcohol and the once whom not have a high use of alcohol. We can see that the variable is statistically significant (0,000). We can also see that for every absence the intercept increases by 0,013.
 
 We can see a slight difference between the women with high and low alcohol consumption in the difference in absences. But the biggest difference lies in the diffrence between absence with high and low use of alcohol between men. In the low use (FALSE) half of the men are distributed between 0 and less than 5 absences on average. On the other hand, in the high use(TRUE) we can see that half of this group has half of their distributions between 3 and 13 absences on average.  
 
 ####*hypothesis*
-The hypothesis that the higher amount of absences the higher is the alcohol consumption. So in this distribution we can witness a slight difference between the group of low alcohol use (left side) and the group with high alcohol use (right side). From these boxplots we can see that high useers of alcohol actually has more absences in school.
-
-In other words, the hypothesis was confirmed.
+The hypothesis that the higher amount of absences the higher is the alcohol consumption. So in this distribution we can witness a slight difference between the group of low alcohol use (left side) and the group with high alcohol use (right side). From these boxplots we can see that high useers of alcohol actually has more absences in school. In other words, the hypothesis was confirmed. But I though there would have been a stronger relationship between the two variables. 
 
 
 ####alc_use vs failures
@@ -217,6 +221,8 @@ The relationship between failure and alc_use, we can find that alc_use statictic
 
 From this output, we can find that for every more failure, the alcohol consumption will increace by 0,096. 
 
+*hypothesis*
+My hypothesis regarding the amount of failures would signifiantly correlate with high alcohol use, is not as clear as I had hoped for. According to the summary of the regression model it is significant, but how many times you fail a class has a very small inpact on the high alcohol use. 
 
 
 
@@ -243,6 +249,11 @@ From this image and output, we can conclude that there is a statistically signif
 
 From the output we can find that for every one step on the famrel scale, the alcohol use reduces by 0,06. This is also what my hypothesis claimed. 
 
+*hypothesis*
+Again my hypothesis in confirmed, but I am still not very pleased. This variable (famrel) is statistically significant, but the difference it makes is very small. I thought there would have been a bigger impact on alcohol use and bad family relationships. 
+
+
+
 ####Alc_use vs goout
 
 ```{r}
@@ -257,11 +268,14 @@ summary(e)
 
 The relationship between the alc_use and goout variable is statistically significant (0.000). This means that the goout variable can to some extent explain the variation in the alc_use variable. This translates to an increase of 0,14 to alc_use when the goout variable increaces by one. 
 
-This confirms my hypothesis regarding going out more with consuming more alcohol.
+*hypothesis*
+My hypothesis was once again confirmed, and there is a statistically significant relationship between the two variables. The impact of going out with friend is bigger than all the other explanatory variables, so I am pleased with the results. This confirms that going out more could increace the alcohol consumption.
+
+
 
 ##Multiple logistic regression
 
-But, just because every variable is individually significant with the alcohol use variable, doens't mean it is statistically significant if we test them all together at once. 
+But, just because every variable is individually significant with the high alcohol use variable, doens't mean it is statistically significant if we test them all together at once. 
 
 
 ```{r}
@@ -272,7 +286,9 @@ f <- glm(high_use ~ failures + absences + goout + famrel, data = url, family = "
 ```{r}
 summary(f)
 ```
-Failures is not any longer statistically significant, so I shall remove the failure variable from the logistic regression. 
+
+Failures is not any longer statistically significant with the target variable high_use, so I shall remove the failure variable from the logistic regression. This means that I shall run the logistic regression again, but without the failures variable.
+
 
 ```{r}
 f2 <- glm(high_use ~ + absences + goout + famrel, data = url, family = "binomial")
@@ -364,10 +380,7 @@ table(high_use = url$high_use, prediction = url$prediction) %>% prop.table %>% a
 
 ####Inaccuracy
 
-Now my task is to calculate the inaccuracy of this model, and I will also count the avreage numer of wrong predictions in this model. 
-
-
-The first I will do is to count the mean predictor error, and I will create a new variable called loss_func.
+Now my task is to calculate the inaccuracy of this model, and I will also count the avreage numer of wrong predictions in this model. The first I will do is to count the mean predictor error, and I will create a new variable called loss_func.
 
 
 *loss_func <- function(class, prob) {*
@@ -376,14 +389,11 @@ The first I will do is to count the mean predictor error, and I will create a ne
 *}*
 
 
-After this step I need to use this new variable loss_func, and use it to measure the mean value of the wrong preditions. 
-
-This is done by using the loss function to classify the data into high_use, and use the probabilities of the url variable propability. 
+After this step I need to use this new variable loss_func, and use it to measure the mean value of the wrong preditions. This is done by using the loss function to classify the data into high_use, and use the probabilities of the url variable propability. 
 
 
 *loss_func(class, prob)*
 
-This code does only give me error, and it seems the fault is found in the definign of the loss_func variable, but I don't know how to fix it. 
 
-So sadly I can't run the two last codes due to not being able to find the error in the loss_func code. 
+This code does only give me error, and it seems the fault is found in the definign of the loss_func variable, but I don't know how to fix it. So sadly I can't run the two last codes due to not being able to find the error in the loss_func code. 
 
