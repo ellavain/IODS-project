@@ -104,7 +104,7 @@ From this table we can see how many failures in tests individuals has made, and 
 
 In the first value 0, there is no significant difference between the genders, and we can also conclude that this is the most common value in this variable (316). But there are slight differences between the values 1,2 and 3, but I am unsurtain if they are significant or not. 
 
-####*hypothesis* 
+*hypothesis* 
 My hypothesis regarding the amount of faliures and alcohol use, is that the higher the failure rate is ,the higher is the alcohol consumption. In other words, I think there will be a correlation between high use of alcohol and high amount of failures. I base my hypothesis on the fact that large amounts of alcohol could have a negative effect on school grades/failures.   
 
 
@@ -123,7 +123,7 @@ g4 + geom_bar()
 The distribution of absences are slightly odd, but I assume that this depends on 2h lectures. The distribution (beginning from the left) every other value is high and low. If we look at the table frame from this variable, we can conclude the same thing. 
 From this distribution it seems that women tend to be more absent from school in comparison to men. The extreme values 54, 56 and 75 are also absences of women. 
 
-####*hypothesis*
+*hypothesis*
 The hypotheis regarding the variable absences, is that the more frequantley an individual is absent from school, the more alcohol this individual uses. The hypothesis is not based upon theoretical facts, only on subjective opinions. Some of the individuals might be absent due to excessive use of alcohol. 
 
 
@@ -142,7 +142,7 @@ g5 + geom_bar()
 
 The variable that measure the family relationship from a scale from 1-5(very bad - excellent), we can see that the distribution is on the most part between 3 and 5. We can conclude that most of the respondents have between a neutral and an excellent relationship with their families.  
 
-####*hypothesis*
+*hypothesis*
 The hypothesis regarding he variable that measures the family relationship and alcohol consumption, is that hte better the relationship with the family (3<) the less the individuals consume alcohol, or is a high user of alcohol. My hypotheis is based upon the idea, that high use of alcohol could be a cause of bad relations to people that are important to the respondents. So to conclude, my hypothesis is that high values on famrel will correlate to low values of alcohol consumption.
 
 
@@ -159,14 +159,14 @@ g6 + geom_bar()
 
 The variable goout measures going out with friends, on a scale from very low(1) to very high(5). Most of the distribution is between the values 2-4, and only a few find themselves spenfinf very low amount of time going out with friends. There is neither a very big difference between the genders. 
 
-####*hypothesis*
+*hypothesis*
 The hypothesis to this variable that measures going out with friends and alcohol consumption, is that a high value on the goout could correlate with higher use of alcohol. This hypothesis is based upon my opinion that in group settings it is easier to consume alcohol, in comparison not going out with friend and drinking alcohol alone. 
 
 
 
 ##Exploring the relationships between the variables
 
-####High_use vs absences
+###High_use vs absences
 
 ```{r}
 
@@ -185,11 +185,11 @@ Here we can explore the individuals that has a high use of alcohol and the once 
 
 We can see a slight difference between the women with high and low alcohol consumption in the difference in absences. But the biggest difference lies in the diffrence between absence with high and low use of alcohol between men. In the low use (FALSE) half of the men are distributed between 0 and less than 5 absences on average. On the other hand, in the high use(TRUE) we can see that half of this group has half of their distributions between 3 and 13 absences on average.  
 
-####*hypothesis*
+*hypothesis*
 The hypothesis that the higher amount of absences the higher is the alcohol consumption. So in this distribution we can witness a slight difference between the group of low alcohol use (left side) and the group with high alcohol use (right side). From these boxplots we can see that high useers of alcohol actually has more absences in school. In other words, the hypothesis was confirmed. But I though there would have been a stronger relationship between the two variables. 
 
 
-####alc_use vs failures
+###high_use vs failures
 
 
 
@@ -226,7 +226,7 @@ My hypothesis regarding the amount of failures would signifiantly correlate with
 
 
 
-####Alc_use vs. famrel
+###High_use vs. famrel
 
 ```{r}
 g51 <- ggplot(data = url, aes(x = famrel, y = high_use, col = sex))
@@ -254,7 +254,7 @@ Again my hypothesis in confirmed, but I am still not very pleased. This variable
 
 
 
-####Alc_use vs goout
+###High_use vs goout
 
 ```{r}
 g61 <- ggplot(data = url, aes(x = goout, y = high_use, col = sex))
