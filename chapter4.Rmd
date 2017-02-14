@@ -11,3 +11,187 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+##2. Load the Boston data
+```{r}
+library(MASS)
+data("Boston")
+```
+
+
+Now when I have accessed the Boston data, I shall present the structure and dimensions of the data. 
+```{r}
+dim(Boston)
+```
+
+
+```{r}
+str(Boston)
+```
+
+Here we can explore and find that the Boston data has 14 variables and 506 observations. The first variable 'crim' is measured by capita crime rate by town. The 'zn' variable measures the proportion of residential land zoned for lots over 25,000 sq.ft. The 'black' variable measures the proportions of dark skinned population in a specific town. 
+
+##3. Graphical overview and summaries
+
+###Summary of the Boston data frame
+
+```{r}
+summary(Boston)
+```
+The variables I will be focusing on in this task is the 'crime' variable and 'black' variable. From the summary command we can find the distribution of per capita crime rate per town, and notice that most of the town don't have a major crime issue, but there is still the maximum value of 88.97. The variable 'black' shows the population of the black colored community in a town. The minimun value is very low (0.32), but it increses rapidly when we explore the first quartile with the number being 375,38. After this the values don't increase as much, because the maximum value is 396,90.
+
+
+###Graphical overview of the Boston data
+
+```{r}
+pairs(Boston)
+```
+
+
+##4. Standardizing the data set
+
+```{r}
+boston_scaled <- scale(Boston)
+```
+
+```{r}
+summary(boston_scaled)
+```
+```{r}
+class(boston_scaled)
+```
+
+```{r}
+boston_scaled <-as.data.frame(boston_scaled)
+```
+
+From this new scaled variable we can see that all the variables values range between -10 and 10. This will probably lead to an easier way to compare the different variables. 
+
+Now I shall create a chategorical variable of the crime rates in Boston. 
+
+
+```{r}
+scaled_crim <-boston_scaled$crim
+```
+
+Now I need to use the quantiles as break points in the variable
+
+```{r}
+bins <- quantile(scaled_crim)
+```
+
+```{r}
+bins
+```
+As we can see, I have created breaking points at the quantlies.
+
+Next I will have to drop the old crime rate variable from the data set. 
+
+```{r}
+crime <- cut(scaled_crim, breaks = bins, include.lowest = TRUE, labels = c("low", "med_low", "med_high", "high"))
+
+```
+
+```{r}
+table(crime)
+```
+
+```{r}
+boston_scaled <- dplyr::select(boston_scaled, -crim)
+```
+
+```{r}
+boston_scaled <- data.frame(boston_scaled, crime)
+```
+
+So now I removed the 'crim' variable from the boston_scaled data set, and added the new 'crime' variable in the boston_scaled data set. 
+
+
+Next I shall divide the scaled_boston data into two different data sets; 'test' and 'train'. But before I can divide the data to two new data sets, I need to figure out how many rows the boston_scaled variable has. The number of rows is saved as he variable 'n'. 
+```{r}
+n <-nrow(boston_scaled)
+```
+
+Next I need to take a sample of the data, and in the task 80% ov the data will go to the 'train' data set, so we need a sample that cover 80% of the scaled_boston data set. This variable shall be named ind.
+
+```{r}
+ind <- sample(n,  size = n * 0.8)
+```
+
+Now we can divide the scaled_data set into the two new data sets 'train' and 'test'
+
+```{r}
+train <- boston_scaled[ind,]
+```
+
+```{r}
+test <- boston_scaled[-ind,]
+```
+
+```{r}
+correct_classes <- test$crime
+```
+
+```{r}
+test <- dplyr::select(test, -crime)
+```
+
+```{r}
+library("MASS")
+```
+
+
+
+##5. Linear discriminant analysis: train set
+
+```{r}
+lda.fit <- lda(crime ~ ., data = train)
+```
+
+
+```{r}
+lda.fit
+```
+
+```{r}
+lda.arrows <- function(x, myscale = 1, arrow_heads = 0.1, color = "red", tex = 0.75, choices = c(1,2)){
+  heads <- coef(x)
+  arrows(x0 = 0, y0 = 0, 
+         x1 = myscale * heads[,choices[1]], 
+         y1 = myscale * heads[,choices[2]], col=color, length = arrow_heads)
+  text(myscale * heads[,choices], labels = row.names(heads), 
+       cex = tex, col=color, pos=3)
+}
+```
+
+```{r}
+classes <- as.numeric(train$crime)
+```
+
+
+
+```{r}
+plot(lda.fit, dimen = 2, col = classes, pch = classes)
+lda.arrows(lda.fit, myscale = 1)
+```
+
+##6. Predicting the classes
+
+```{r}
+lda.pred <- predict(lda.fit, newdata = test)
+```
+
+```{r}
+table(correct = correct_classes, predicted = lda.pred$class)
+```
+
+Here we can compare between the actual values and the predicted values and how much they differ from each other. 
+
+From this table we can see that when the correct low value is 13, the prediction gives out 10 on med_low. Obviously this is an erroe, but because of my inexperience, I have a hard time judgeing if this is a minor or a major flaw. 
+
+##7. Reloading the Boston data set
+
+
+
+
+
+
