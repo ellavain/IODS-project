@@ -1,7 +1,7 @@
 ---
 title: "chapter4.Rmd"
 author: "Ella"
-date: "14 helmikuuta 2017"
+date: "15 helmikuuta 2017"
 output: html_document
 ---
 
@@ -172,6 +172,9 @@ library("MASS")
 
 ##5. Linear discriminant analysis: train set
 
+In the linear discriminant analysis I will be looking at the target variable crime, and all the other values are predictors of the crime value. We can also see the predictor variables being grouped by the labels low, med_low, med_high and high. At the bottom we can also find the coefficients of the linear discriminants. 
+
+
 ```{r}
 lda.fit <- lda(crime ~ ., data = train)
 ```
@@ -180,6 +183,9 @@ lda.fit <- lda(crime ~ ., data = train)
 ```{r}
 lda.fit
 ```
+
+
+Next we want to visualize the distribution of these different variables are distributed. The different labeling chategorize are coded in different colors. The low value is black, med_low is red, med_high is green and the high values are blue. The different variables are also coded in ted, and they also have arrows that point in what direction they move. 
 
 ```{r}
 lda.arrows <- function(x, myscale = 1, arrow_heads = 0.1, color = "red", tex = 0.75, choices = c(1,2)){
@@ -204,6 +210,8 @@ lda.arrows(lda.fit, myscale = 1)
 ```
 
 ##6. Predicting the classes
+
+Next task is to predict classes. This I will do with the test data frame. The prediction is made to evaluate what kind of values a specific variable is supposed to give, based upon some values. 
 
 ```{r}
 lda.pred <- predict(lda.fit, newdata = test)
