@@ -18,7 +18,7 @@ data("Boston")
 ```
 
 
-Now when I have accessed the Boston data, I shall present the structure and dimensions of the data. 
+Now when I have accessed the Boston data, I shall present the structure and dimensions of the data frame.
 ```{r}
 dim(Boston)
 ```
@@ -28,7 +28,9 @@ dim(Boston)
 str(Boston)
 ```
 
-Here we can explore and find that the Boston data has 14 variables and 506 observations. The first variable 'crim' is measured by capita crime rate by town. The 'zn' variable measures the proportion of residential land zoned for lots over 25,000 sq.ft. The 'black' variable measures the proportions of dark skinned population in a specific town. 
+Here we can explore and find that the Boston data has 14 variables and 506 observations. The first variable 'crim' is measured by per capita crime rate by town. The 'zn' variable measures the proportion of residential land zoned for lots over 25,000 sq.ft. The 'black' variable measures the proportions of dark skinned population in a specific town. The 'lstat' is a measurement of how many people there are in the lower status population in procent. The value 'ptratio'is the ratio between the teacher and the students in a specific town. 
+
+This 'Boston' data frame tries to gather data regarding crime rates, schools, taxes and the ratio of the black community. 
 
 ##3. Graphical overview and summaries
 
@@ -46,9 +48,32 @@ The variables I will be focusing on in this task is the 'crime' variable and 'bl
 pairs(Boston)
 ```
 
+From this table it is quite difficult to explore the relationships between the different variables at first glance. If we look closley we can see different causal relationships between the variables. In these tasks we will be looking more closley on the 'crim' (crime) varianble, and how these other variables contributes to the crime rates. 
+
+So I can try to visualize the distributions with a correlation plot as in the Datacamp exercises before.
+
+```{r}
+library(tidyverse)
+```
+```{r}
+library(corrplot)
+```
+
+```{r}
+cor_matrix<-cor(Boston) %>% round(digits = 2)
+```
+
+
+```{r}
+corrplot(cor_matrix, method="circle", type = "upper", cl.pos = "b", tl.pos = "d", tl.cex = 0.6)
+```
+
+From this correlation plot we can easily spot which variables has some kind of causal relationship with one another. The dark red color indicates a strong negative correlation and the dark blue color indicates a strong positive correlation, and obviously the lighter colors indicate a less strong positive or negative correlation between the variables. 
+
 
 ##4. Standardizing the data set
 
+Before we can easily compare the different variables, we shall scale the values, so they are compatable with one another. 
 ```{r}
 boston_scaled <- scale(Boston)
 ```
@@ -64,16 +89,17 @@ class(boston_scaled)
 boston_scaled <-as.data.frame(boston_scaled)
 ```
 
-From this new scaled variable we can see that all the variables values range between -10 and 10. This will probably lead to an easier way to compare the different variables. 
+From this new scaled variable we can see that all the variable values range between -10 and 10. This will probably lead to an easier way to compare the different variables.
 
-Now I shall create a chategorical variable of the crime rates in Boston. 
+
+Now I shall create a chategorical variable of the crime rates in Boston. I will do this, because it is not possible to use the numerical values in some of the codes that we have to make so we get the wanted results. 
 
 
 ```{r}
 scaled_crim <-boston_scaled$crim
 ```
 
-Now I need to use the quantiles as break points in the variable
+Now I need to use the quantiles as break points in the variable. The quantiles are 0%, 25%, 50%, 75% and 100%. This makes it easier to understand how the values are distributed in a specific variable. The variable that I am using is the 'crim' variable. 
 
 ```{r}
 bins <- quantile(scaled_crim)
@@ -82,9 +108,9 @@ bins <- quantile(scaled_crim)
 ```{r}
 bins
 ```
-As we can see, I have created breaking points at the quantlies.
+As we can see, I have created breaking points at the quantlies. So from these we can interpet that half of the variable values are between values -0,419 and -0,390. So we can conclude that there isn't a very big difference between the first 50% of the data. The big difference is found between the last 25% (75%-100%), where the values are distributed between 0,00738 and 9,9241. I would interpet this as there being a few towns with extremely high crime rates in comparison to other towns. 
 
-Next I will have to drop the old crime rate variable from the data set. 
+Next I will create a new variable 'crime' that consists of the scaled crim values, its breaks consists of the quartiles, and we are labeling 4 different groupings on the rates of crimes. The groupings are low-, medium low-, medium high- and very high crime rates. 
 
 ```{r}
 crime <- cut(scaled_crim, breaks = bins, include.lowest = TRUE, labels = c("low", "med_low", "med_high", "high"))
@@ -95,6 +121,8 @@ crime <- cut(scaled_crim, breaks = bins, include.lowest = TRUE, labels = c("low"
 table(crime)
 ```
 
+Next I will have to drop the old crime rate ('crim') variable from the data set. This I will do, because the new crime rate is more sufficient to my needs of analysis. 
+
 ```{r}
 boston_scaled <- dplyr::select(boston_scaled, -crim)
 ```
@@ -102,8 +130,6 @@ boston_scaled <- dplyr::select(boston_scaled, -crim)
 ```{r}
 boston_scaled <- data.frame(boston_scaled, crime)
 ```
-
-So now I removed the 'crim' variable from the boston_scaled data set, and added the new 'crime' variable in the boston_scaled data set. 
 
 
 Next I shall divide the scaled_boston data into two different data sets; 'test' and 'train'. But before I can divide the data to two new data sets, I need to figure out how many rows the boston_scaled variable has. The number of rows is saved as he variable 'n'. 
@@ -126,6 +152,9 @@ train <- boston_scaled[ind,]
 ```{r}
 test <- boston_scaled[-ind,]
 ```
+
+
+
 
 ```{r}
 correct_classes <- test$crime
