@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ##2. Load the Boston data
-```{r}
+```{r echo=FALSE}
 library(MASS)
 data("Boston")
 ```
@@ -52,14 +52,15 @@ From this table it is quite difficult to explore the relationships between the d
 
 So I can try to visualize the distributions with a correlation plot as in the Datacamp exercises before.
 
-```{r}
+```{r echo= FALSE}
 library(tidyverse)
-```
-```{r}
 library(corrplot)
 ```
 
-```{r}
+
+
+
+```{r echo= FALSE}
 cor_matrix<-cor(Boston) %>% round(digits = 2)
 ```
 
@@ -81,11 +82,11 @@ boston_scaled <- scale(Boston)
 ```{r}
 summary(boston_scaled)
 ```
-```{r}
+```{r echo=FALSE}
 class(boston_scaled)
 ```
 
-```{r}
+```{r echo=FALSE}
 boston_scaled <-as.data.frame(boston_scaled)
 ```
 
@@ -101,11 +102,11 @@ scaled_crim <-boston_scaled$crim
 
 Now I need to use the quantiles as break points in the variable. The quantiles are 0%, 25%, 50%, 75% and 100%. This makes it easier to understand how the values are distributed in a specific variable. The variable that I am using is the 'crim' variable. 
 
-```{r}
+```{r echo=FALSE}
 bins <- quantile(scaled_crim)
 ```
 
-```{r}
+```{r echo=FALSE}
 bins
 ```
 As we can see, I have created breaking points at the quantlies. So from these we can interpet that half of the variable values are between values -0,419 and -0,390. So we can conclude that there isn't a very big difference between the first 50% of the data. The big difference is found between the last 25% (75%-100%), where the values are distributed between 0,00738 and 9,9241. I would interpet this as there being a few towns with extremely high crime rates in comparison to other towns. 
@@ -156,15 +157,15 @@ test <- boston_scaled[-ind,]
 
 
 
-```{r}
+```{r echo=FALSE}
 correct_classes <- test$crime
 ```
 
-```{r}
+```{r echo = FALSE}
 test <- dplyr::select(test, -crime)
 ```
 
-```{r}
+```{r echo = FALSE}
 library("MASS")
 ```
 
@@ -175,7 +176,7 @@ library("MASS")
 In the linear discriminant analysis I will be looking at the target variable crime, and all the other values are predictors of the crime value. We can also see the predictor variables being grouped by the labels low, med_low, med_high and high. At the bottom we can also find the coefficients of the linear discriminants. 
 
 
-```{r}
+```{r echo=FALSE}
 lda.fit <- lda(crime ~ ., data = train)
 ```
 
@@ -187,7 +188,7 @@ lda.fit
 
 Next we want to visualize the distribution of these different variables are distributed. The different labeling chategorize are coded in different colors. The low value is black, med_low is red, med_high is green and the high values are blue. The different variables are also coded in ted, and they also have arrows that point in what direction they move. 
 
-```{r}
+```{r echo=FALSE}
 lda.arrows <- function(x, myscale = 1, arrow_heads = 0.1, color = "red", tex = 0.75, choices = c(1,2)){
   heads <- coef(x)
   arrows(x0 = 0, y0 = 0, 
@@ -198,13 +199,13 @@ lda.arrows <- function(x, myscale = 1, arrow_heads = 0.1, color = "red", tex = 0
 }
 ```
 
-```{r}
+```{r echo=FALSE}
 classes <- as.numeric(train$crime)
 ```
 
 
 
-```{r}
+```{r echo=FALSE}
 plot(lda.fit, dimen = 2, col = classes, pch = classes)
 lda.arrows(lda.fit, myscale = 1)
 ```
@@ -213,7 +214,7 @@ lda.arrows(lda.fit, myscale = 1)
 
 Next task is to predict classes. This I will do with the test data frame. The prediction is made to evaluate what kind of values a specific variable is supposed to give, based upon some values. 
 
-```{r}
+```{r echo=FALSE}
 lda.pred <- predict(lda.fit, newdata = test)
 ```
 
@@ -227,8 +228,49 @@ From this table we can see that when the correct low value is 13, the prediction
 
 ##7. Reloading the Boston data set
 
+Reloading and scaling the Boston data set
+
+```{r echo=FALSE}
+data("Boston")
+```
+
+```{r echo = FALSE}
+scaled_boston <- scale(Boston)
+```
+
+```{r echo=FALSE}
+dist_eu <- dist(scaled_boston)
+```
+
+```{r}
+summary(dist_eu)
+```
+
+Here we have the distances between the calcultations in the scaled Boston data frame.
 
 
+Next I will be running k-means on the scaled Boston variable. And I will also visualize the distribution of the different variables.
+
+```{r echo=FALSE}
+twcss <- sapply(1:10, function(k){kmeans(dist_eu, k)$tot.withinss})
+```
+
+```{r echo=FALSE}
+plot(1:10, twcss, type='b')
+```
 
 
+From this image I shall conclude what the best number of centers I will use in the visualizing stage of the material. So I will choose the number 3, because this image tilts a little at the number 3. 
 
+###Visualizing the distribution
+
+```{r echo=FALSE}
+km <-kmeans(dist_eu, centers = 3)
+```
+
+
+```{r echo= FALSE}
+pairs(scaled_boston, col = km$cluster)
+```
+
+Now we hade the 3 centers displayed in 3 different colors. We can observe that 'medv' variable compared with all the other variables is always green on the right hand side, red in the left side, and black on the top left side. We can also see some variables that are coded with either 0 or 1 that they are colors only on the very right and very left of the box (i.e. chas, rad). On the 'zn' variable there is almost only the colors green and red. The 'crim' variable is mostly colored black with only a little of green and red with some variables. 

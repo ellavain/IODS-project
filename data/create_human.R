@@ -21,7 +21,7 @@ summary(hd)
 summary(gii)
 
 
-hd$HumanHDI <- hd$Human.Development.Index..HDI.
+hd$HDI <- hd$Human.Development.Index..HDI.
 hd$LEAB<- hd$Life.Expectancy.at.Birth
 hd$EYOE<- hd$Expected.Years.of.Education
 hd$meanEYOE<-hd$Mean.Years.of.Education
@@ -37,24 +37,38 @@ gii$GenderGII <-gii$Gender.Inequality.Index..GII.
 gii$MaMo<- gii$Maternal.Mortality.Ratio
 gii$adolBR<-gii$Adolescent.Birth.Rate
 gii$PRiP<-gii$Percent.Representation.in.Parliament
-gii$Popsecedufem<-gii$Population.with.Secondary.Education..Female.
-gii$Popsecedumale<-gii$Population.with.Secondary.Education..Male.
-gii$Labourfem<-gii$Labour.Force.Participation.Rate..Female.
-gii$Labourmale<-gii$Labour.Force.Participation.Rate..Male.
+gii$secedufem<-gii$Population.with.Secondary.Education..Female.
+gii$secedumale<-gii$Population.with.Secondary.Education..Male.
+gii$Lfem<-gii$Labour.Force.Participation.Rate..Female.
+gii$Lmale<-gii$Labour.Force.Participation.Rate..Male.
 
+gii <- dplyr::select(gii, -c(3:10,15:20))
+str(gii)
+
+
+summary(gii)
+
+-c(3:10,15:20)
 
 library(dplyr); library(ggplot2)
 
 
 
-gii <- mutate(gii, secondary_edu = gii$Popsecedufem / gii$Popsecedumale)
+gii <- mutate(gii, secondary_edu = gii$secedufem / gii$secedumale)
 
-gii <- mutate(gii, labour_force = gii$Labourfem / gii$Labourmale)
-
-
+gii <- mutate(gii, labour_force = gii$Lfem / gii$Lmale)
 
 
+str(hd)
+
+hd <- dplyr::select(gii, c(1:16))
+-c(3:8)
+hd
+str(hd)
+
+join_by <- c("")
+
+human <- inner_join(gii, hd, by = "Country", suffix = c(".gii", ".hd"))
 
 
-
-
+summary(human)
