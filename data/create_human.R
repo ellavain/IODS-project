@@ -45,8 +45,9 @@ gii$Lmale<-gii$Labour.Force.Participation.Rate..Male.
 gii <- dplyr::select(gii, -c(3:10,15:20))
 str(gii)
 
+hd <- dplyr::select(hd, -c(3:8))
+str(hd)
 
-summary(gii)
 
 -c(3:10,15:20)
 
@@ -59,12 +60,6 @@ gii <- mutate(gii, secondary_edu = gii$secedufem / gii$secedumale)
 gii <- mutate(gii, labour_force = gii$Lfem / gii$Lmale)
 
 
-str(hd)
-
-hd <- dplyr::select(gii, c(1:16))
--c(3:8)
-hd
-str(hd)
 
 join_by <- c("")
 
