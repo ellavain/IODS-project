@@ -5,9 +5,6 @@ date: "21 helmikuuta 2017"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 #Chapter 5: Dimensionality reduction techniques
 
@@ -112,8 +109,14 @@ dim(tea)
 
 ```{r}
 keep_columns <- c("Tea", "How", "how", "sugar", "where", "lunch")
+
+```
+
+```{r}
 tea_time <- select(tea, one_of(keep_columns))
 ```
+
+
 
 ```{r}
 summary(tea_time)
