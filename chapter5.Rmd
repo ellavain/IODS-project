@@ -10,6 +10,8 @@ output: html_document
 
 ##1. Load data, briefly explore the data
 
+To explore this data frame, I shall execute the codes that will bring the structure of the human data file anf its dimensions. 
+
 ```{r}
 human <-read.table("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/human2.txt", sep = ",", header = TRUE)
 ```
@@ -23,19 +25,28 @@ str(human)
 dim(human)
 ```
 
+As we can see, the data consists of 8 variables and 155 observations. The variables as Edu2.FM that consists of the male and female proportion with at least secondary education. LaboFM is the proportion of male and female within the labour force. Edu.Exp consists of the expected years of schooling. The Life.Exp is the life expectency at birth. GNI variable counts the Gross National Income per capita. Mat.Mor counts the maternal mortality ratio. Ado.Birth is the rate of adolescent births. And the last variable is Parli.F that measures the percentages of female representatives in the parliament. 
+
 ##2. Graphical overview
+
+Here I present the human data file where every variable is compared with each other variable, and creates a matrix. 
 
 ```{r}
 pairs(human, col = "deeppink2")
 ```
 
+From this image we can assume i.e. the longer expected education time the lower is the maternal mortality. Also the longer expected education time the higher is the life expectancy. Some variables like the percentages of women in the parliament does not give any clear results compared to other variables. Something very interesting is that the maternal mortality increaces when it is compared to the Labour force variable. 
 
 ```{r}
 summary(human)
 ```
 
+From this summary we can see that some of the variables has a very widley spred distribution. This we can see in the maternal mortality variable, where the minimun value is 1, and the maximum value is 1100. Though it is more fruitfull to compare the first and thirs quartiles, to get a better understanding of where most of the observations are located. Another variable that caught my attenttion is the percenteges of women in parliament, that ranges from 0% to 57,5%. This is quite interesting, because here we assume there to be women in the parliament, whereas in other countries this is obviously not the case.
+
+
 ##3. Principal Component Analysis (unstandardized data)
 
+Here I tried to do a biplot of the unstandardized human data file, but as you can see, it has not worked out as it should have. 
 
 ```{r}
 pca_human <- prcomp(human)
@@ -55,17 +66,15 @@ human_std <- scale(human)
 ```{r}
 summary(human_std)
 ```
+Here we have the human data file that has been scaled, so that we can use it to run a principal component analysis. 
 
 ```{r}
 pca_human_std <- prcomp(human_std)
 ```
 
-```{r}
-biplot(pca_human_std, choices = 1:2, cex = c(0.8, 1), col = c("grey40", "deeppink2"))
-```
+Underneith we have the different principal components lined up. There are all together 8 different principal components. The first principal component has the highest amount of variance compared to the other principal components. The second principal component captures the next highest amount of variances and so forth. 
 
-
-
+We can observe that the first principal component captures 53.6% of the variances, and the secound principal component captures 16.2% and so on. 
 
 ```{r}
 s <-summary(pca_human_std)
@@ -78,6 +87,8 @@ pca_pr <- round(100*s$importance[2,], digits = 1)
 pca_pr
 ```
 
+Here underneath I made a biplot of the standardized human data that has undergone a principal component analysis. In the table you can see all the countries written in grey color and all the variables in pink colors with similar arrows. 
+
 
 ```{r}
 pc_lab <- paste0(names(pca_pr), " (", pca_pr, "%)")
@@ -86,10 +97,16 @@ biplot(pca_human_std, cex = c(0.8, 1), col = c("grey40", "deeppink2"), xlab = pc
 
 
 
-
 ##5.Personal interpretations
 
+To interpet this biplot, I understood that a small arrow angle means a high positive correlation. And also that the arrows length is somehow proportional to the standard deviations. 
+
+From the biplot, I can interpet that the Ado.Birth and Mat.Mor variables as a high correlation, do to their closeness of the arrows and the similar angle. The same can be said of the 4 variables GNI, Edu.Exp., Life.Exp and Edu2.FM, that they have a very strong positive corrleation between each other because all the arrows are in a similar angle and very close to each other. The last to variables in the standardized human data set are the Parli.F and Labo.FM variabled that as some kind of positive correlation between each other too. 
+
+
 ##6.Factominer, Multiple Correspondence Analysis 
+
+Here the task is to explore and visualize the data frame called tea. The data frame tea consists of 36 variables and 300 observations. The data is literally information on what kind of tea habits people have. The next task is to just keep some of the columns. 
 
 ```{r}
 library(FactoMineR)
@@ -116,26 +133,21 @@ keep_columns <- c("Tea", "How", "how", "sugar", "where", "lunch")
 tea_time <- select(tea, one_of(keep_columns))
 ```
 
-
+Here I will summarise the new variable tea_time, that consists of different chategorize: Tea, How, how, sugar, where and lunch. These chategorize have different variables. For example the tea chategory consists of 3 alternative variables: black, Earl Grey and green. So this Tea variable wants so present what kinds of tea is consumed. 
 
 ```{r}
 summary(tea_time)
 ```
 
 
+Here is the distribution of the different variables. 
+
 ```{r}
-gather(tea) %>% ggplot(aes(value)) + facet_wrap("key", scales = "free") + geom_bar()
+gather(tea_time) %>% ggplot(aes(value)) + facet_wrap("key", scales = "free") + geom_bar()
 ```
 
 
-
-
-```{r}
-gather(tea_time) %>% ggplot(aes(value)) + facet_wrap("key", scales = "free") + geom_bar() + theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8))
-```
-
-
-
+Next 
 
 ```{r}
 mca <- MCA(tea_time, graph = FALSE)
