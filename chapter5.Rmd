@@ -10,7 +10,7 @@ output: html_document
 
 ##1. Load data, briefly explore the data
 
-To explore this data frame, I shall execute the codes that will bring the structure of the human data file anf its dimensions. 
+To explore this data frame, I shall execute the codes that will bring the structure of the human data file and its dimensions. 
 
 ```{r}
 human <-read.table("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/human2.txt", sep = ",", header = TRUE)
@@ -46,13 +46,11 @@ From this summary we can see that some of the variables has a very widley spred 
 
 
 
-
-
 ##3. Principal Component Analysis (unstandardized data)
 
 Here I tried to do a biplot of the unstandardized human data file, but as you can see, it has not worked out as it should have. 
 
-```{r}
+```{r echo=FALSE}
 pca_human <- prcomp(human)
 ```
 
@@ -63,7 +61,7 @@ biplot(pca_human, choices = 1:2, cex = c(0.8, 1), col = c("grey40", "deeppink2")
 
 ##4. Principal Component Analysis (standardized data)
 
-```{r}
+```{r echo=FALSE}
 human_std <- scale(human)
 ```
 
@@ -72,7 +70,7 @@ summary(human_std)
 ```
 Here we have the human data file that has been scaled, so that we can use it to run a principal component analysis. 
 
-```{r}
+```{r echo=FALSE}
 pca_human_std <- prcomp(human_std)
 ```
 
@@ -101,7 +99,7 @@ biplot(pca_human_std, cex = c(0.8, 1), col = c("grey40", "deeppink2"), xlab = pc
 
 
 
-##5.Personal interpretations
+##5. Personal interpretations
 
 The differences between the two principal component analysis where one is standarsized and the other unstandardized, is the possibility to extract information. In the unstandardized principal component analysis the values of the different variables vary very much. For example the GNI variable gets much higher values than all the other values, and this leads to it being impossible to interpet the variable correlation. 
 
@@ -110,7 +108,7 @@ To interpet this biplot, I understood that a small arrow angle means a high posi
 From the biplot, I can interpet that the Ado.Birth and Mat.Mor variables as a high correlation, do to their closeness of the arrows and the similar angle. The same can be said of the 4 variables GNI, Edu.Exp., Life.Exp and Edu2.FM, that they have a very strong positive corrleation between each other because all the arrows are in a similar angle and very close to each other. The last to variables in the standardized human data set are the Parli.F and Labo.FM variabled that as some kind of positive correlation between each other too. 
 
 
-##6.Factominer, Multiple Correspondence Analysis 
+##6. Factominer, Multiple Correspondence Analysis 
 
 Here the task is to explore and visualize the data frame called tea. The data frame tea consists of 36 variables and 300 observations. The data is literally information on what kind of tea habits people have. The next task is to just keep some of the columns. 
 
@@ -132,13 +130,14 @@ str(tea)
 dim(tea)
 ```
 
-```{r}
+```{r echo = FALSE}
 keep_columns <- c("Tea", "How", "how", "sugar", "where", "lunch")
 
 ```
 
-```{r}
+```{r echo= FALSE}
 tea_time <- dplyr::select(tea, one_of(keep_columns))
+
 ```
 
 Here I will summarise the new variable tea_time, that consists of different chategorize: Tea, How, how, sugar, where and lunch. These chategorize have different variables. For example the tea chategory consists of 3 alternative variables: black, Earl Grey and green. So this Tea variable wants so present what kinds of tea is consumed. 
@@ -155,9 +154,11 @@ gather(tea_time) %>% ggplot(aes(value)) + facet_wrap("key", scales = "free") + g
 ```
 
 
-Next 
+Next I shall run a multiple correspondence analysis on the tea_time variable. We can see in the Eigenvalues that there is a total of 11 dimensions that explain all the variances in the tea_time data. The first dimension has the largest variances and so forth. 
 
-```{r}
+In the Individuals, were we are looking at the 10 first individuals, that the first value represents the coordinates, their contribution of the dimension in percent and the squared corrleation of the dimension. The Categories variable measures the same 3 things as just mensioned, but it also measures the variables v:test value. The Categorical Variables (eta2) value measures the squared correlation between each variable and dimension. If the value of the Categorical Values are close to one, there is a strong link with the variable and dimension. I.e. 'how' variable has a strong link with the first dimension (0,708). 
+
+```{r echo=FALSE}
 mca <- MCA(tea_time, graph = FALSE)
 ```
 
@@ -170,6 +171,7 @@ summary(mca)
 plot(mca, invisible=c("ind"), habillage = "quali")
 ```
 
+From this output I am slihtly unsurtain how to interpet this table. The colors represent the different categorical groups they belong in. It is very interesting that the 'how' variable has a strong corrleation with the first dimension (green) but all the different variables are very scattered in the table. Does a strong correlation with the dimension mean aa widley spread table?
 
 
 
