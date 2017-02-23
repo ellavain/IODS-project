@@ -103,6 +103,8 @@ biplot(pca_human_std, cex = c(0.8, 1), col = c("grey40", "deeppink2"), xlab = pc
 
 ##5.Personal interpretations
 
+The differences between the two principal component analysis where one is standarsized and the other unstandardized, is the possibility to extract information. In the unstandardized principal component analysis the values of the different variables vary very much. For example the GNI variable gets much higher values than all the other values, and this leads to it being impossible to interpet the variable correlation. 
+
 To interpet this biplot, I understood that a small arrow angle means a high positive correlation. And also that the arrows length is somehow proportional to the standard deviations. 
 
 From the biplot, I can interpet that the Ado.Birth and Mat.Mor variables as a high correlation, do to their closeness of the arrows and the similar angle. The same can be said of the 4 variables GNI, Edu.Exp., Life.Exp and Edu2.FM, that they have a very strong positive corrleation between each other because all the arrows are in a similar angle and very close to each other. The last to variables in the standardized human data set are the Parli.F and Labo.FM variabled that as some kind of positive correlation between each other too. 
