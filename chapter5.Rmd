@@ -44,6 +44,10 @@ summary(human)
 From this summary we can see that some of the variables has a very widley spred distribution. This we can see in the maternal mortality variable, where the minimun value is 1, and the maximum value is 1100. Though it is more fruitfull to compare the first and thirs quartiles, to get a better understanding of where most of the observations are located. Another variable that caught my attenttion is the percenteges of women in parliament, that ranges from 0% to 57,5%. This is quite interesting, because here we assume there to be women in the parliament, whereas in other countries this is obviously not the case.
 
 
+
+
+
+
 ##3. Principal Component Analysis (unstandardized data)
 
 Here I tried to do a biplot of the unstandardized human data file, but as you can see, it has not worked out as it should have. 
@@ -111,8 +115,10 @@ Here the task is to explore and visualize the data frame called tea. The data fr
 ```{r}
 library(FactoMineR)
 library(ggplot2)
-library(dplyr)
 library(tidyr)
+library(corrplot)
+library(MASS)
+library(dplyr)
 data("tea")
 ```
 
@@ -130,7 +136,7 @@ keep_columns <- c("Tea", "How", "how", "sugar", "where", "lunch")
 ```
 
 ```{r}
-tea_time <- select(tea, one_of(keep_columns))
+tea_time <- dplyr::select(tea, one_of(keep_columns))
 ```
 
 Here I will summarise the new variable tea_time, that consists of different chategorize: Tea, How, how, sugar, where and lunch. These chategorize have different variables. For example the tea chategory consists of 3 alternative variables: black, Earl Grey and green. So this Tea variable wants so present what kinds of tea is consumed. 
